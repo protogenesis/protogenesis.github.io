@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>点字游戏</title>
+    <style media="screen">
+        .wrap {
+            width: 350px;
+            border: 1px solid black;
+        }
+
+        .top {
+            width: 100%;
+            height: 50px;
+        }
+
+        .time {
+            width: 60%;
+            height: 40px;
+            font-size: 2em;
+            float: left;
+            border: 1px solid black;
+        }
+
+        .score {
+            width: 35%;
+            height: 40px;
+            font-size: 2em;
+            border: 1px solid black;
+            float: right;
+        }
+
+        .content {
+            width: 100%;
+            height: 150px;
+            font-size: 9em;
+            text-align: center;
+            line-height: 150px;
+            margin: 20px 0px;
+        }
+
+        .about {
+            width: 100%;
+            height: 120px;
+            font-size: 2em;
+            text-indent: 2em;
+            margin: 10px 0px;
+        }
+
+        .footer {
+            width: 100%;
+        }
+
+        .footer span {
+            width: 20%;
+            font-size: 60px;
+            height: auto;
+            text-align: center;
+        }
+
+        .again {
+            width: 100%;
+            height: 50px;
+            font-size: 3em;
+            text-align: center;
+            margin: 10px 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 大盒子 -->
+    <div class="wrap">
+        <!-- 顶部显示时间和分数的div -->
+        <div class="top">
+            <div class="time" id="time">
+                剩余时间:20
+            </div>
+            <div class="score" id="score">
+                完成:0
+            </div>
+        </div>
+
+        <!-- 中间显示题目的div -->
+        <div class="content" id="content">
+            红
+        </div>
+        <!-- 提示规则的div -->
+        <div class="about">
+            根据上面字的颜色从下面选择正确的字，选择正确自动开始
+        </div>
+        <!-- 用来选择答案的div -->
+        <div class="footer" id="footer">
+            <span>红</span>
+            <span>红</span>
+            <span>红</span>
+            <span>红</span>
+            <span>红</span>
+        </div>
+        <!-- 重新开始 -->
+        <div class="again" id="again">
+            重新开始
+        </div>
+    </div>
+    <script>
+        //获取倒计时
+        var time = document.getElementById('time');
+        //获取分数
+        var score = document.getElementById('score');
+        //获取题目
+        var show = document.getElementById('content');
+        //获得所有可选答案的span
+        var list = document.getElementsByTagName('span');
+        //获取重新开始
+        var again = document.getElementById('again');
+
+
+        //定义文字颜色属性数组
+        var colors = ['red', 'blue', 'gold', 'green', 'black'];
+        //定义所有待选文字数组
+        var words = ['红', '蓝', '金', '绿', '黑'];
+        //设置默认的游戏时间
+        var times = 20;
+        //初始化起始分数
+        var scores = 0;
+        //当前颜色索引
+        var colorIndex = 0;
+
+
+        var dictionary = {};
+
+        //保存字典，最终字典的结果为：  red : 红,  blue:蓝,  gold:金  等
+        for (var i = 0; i < words.length; i++) {
+
+            dictionary[colors[i]] = words[i];
+        }
+
+
+        //页面一打开就开启计时
+        var timerID = setInterval(function () {
+
+            times--;
+
+            if (times == 0) {
+
+                clearInterval(timerID);
+                alert("游戏结束，您的分数为：" + scores + "击败了全国XXXX人");
+
+            } else {
+
+                time.innerHTML = '剩余时间:' + times;
+            }
+
+        }, 1000);
+
+
+        //改变中间题目的文字和颜色(随机文字和随机颜色)
+        function showChange() {
+
+            colorIndex = parseInt(Math.random() * 5);
+            var wordIndex = parseInt(Math.random() * 5)
+            show.innerHTML = words[wordIndex];
+            show.style.color = colors[colorIndex];
+        }
+        showChange();
+
+        // 生成随机索引的数组
+        // 要求：索引不能重复，而且一定要有5个
+        function arrs() {
+
+            //保存随机索引的数组
+            var arr = [];
+
+            //只要这个保存索引的数组长度 还没到 所有颜色的长度，那就一直循环添加索引
+            while (arr.length < colors.length) {
+
+                //取到一个随机数
+                var ran1 = parseInt(Math.random() * 5);
+
+                //准备一个开关，默认当它可以添加
+                var canAdd = true;
+
+                //查找索引数组中是否已经有这个随机的索引，如果有则不能把这个索引添加到数组
+                for (var i = 0; i < arr.length; i++) {
+
+                    //检测数组中是否包含这个随机索引
+                    if (arr[i] == ran1) {
+                        canAdd = false;//如果有，则把可以添加的标记改为false，代表不能添加
+                        break;
+                    }
+                }
+
+                //如果可以添加则添加
+                if (canAdd) {
+                    arr.push(ran1);
+                }
+
+                //注意：此时这个部分还处于循环内，所以来到这后会回到while循环条件处判断循环条件是否满足，就是通过这么一个while循环最终能生成跟颜色值一样长度的索引值，例如颜色值有5个，那么就会生成一个长度为5的数组，数组中每个元素是随机的不重复的索引
+            }
+            return arr;
+        }
+
+
+        //生成待选文字的顺序和颜色
+        function listChange() {
+
+            var ws = arrs();//生成一轮用来取随机文字的索引列表
+            var cs = arrs();//生成一轮用来取随机文字颜色的索引列表
+
+            //遍历所有的待选span
+            for (var i = 0; i < list.length; i++) {
+
+                //根据随机文字的索引，取到对应文字，然后赋值给当前这个span
+                list[i].innerHTML = words[ws[i]];
+
+                //根据随机颜色的索引，取到对应文字，然后赋值给当前这个span的文字颜色
+                list[i].style.color = colors[cs[i]];
+            }
+        }
+
+        listChange();
+
+
+
+        //给每个选项加点击事件
+        for (var i = 0; i < list.length; i++) {
+
+            list[i].onclick = function () {
+
+                //取出题目现在的文字颜色
+                var showColor = show.style.color;
+                //取出这个颜色对应的汉字
+                var wordColor = dictionary[showColor];
+
+                //点击事件里判断点的文字是否等于题目的文字颜色
+                if (this.innerHTML == wordColor) {
+
+                    //如果正确，重新改变题目
+                    showChange();
+                    //重新改变下边的待选
+                    listChange();
+                    //分数+1
+                    scores++;
+                    //把分数显示在界面上
+                    score.innerHTML = '完成:' + scores;
+                }
+            }
+        }
+
+
+        //重新开始
+        again.onclick = function () {
+
+            times = 20;
+            scores = 0;
+            showChange();
+            listChange();
+            flag = false;
+            time.innerHTML = '剩余时间:20';
+            score.innerHTML = '完成:0';
+        }
+    </script>
+</body>
+
+</html>
