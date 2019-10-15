@@ -1,3 +1,3 @@
 # protogenesis.github.io
 
-#点字游戏
+welcome
