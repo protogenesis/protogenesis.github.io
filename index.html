@@ -1,31 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Welcome</title>
-    <style>
-        html, body {
-            background-color: #630808;
-            text-align: center;
-            padding: 0;
-            margin: 0;
-        }
-        p {
-            margin: 0;
-            font: 35px/100vh '楷体';
-            color: #630808;
-            text-shadow: 
-                1px 1px 1px #fff,
-                -1px -1px 1px #fff;
-            transition: all 2s;
-            user-select: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Welcome</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      background-color: #630808;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+    }
+    .sign {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      margin: 0 auto;
+    }
+    p {
+      margin: 0;
+    }
+
+    .chinese {
+      font: 35px KaiTi, FangSong, STKaiti, STFangsong,  sans-serif;
+      color: #630808;
+      text-shadow:
+        1px 1px 1px #fff,
+        -1px -1px 1px #fff;
+    }
+
+    .english {
+      font-size: 20px;
+      font-weight: bold;
+      color: #fff;
+    }
+  </style>
 </head>
+
 <body>
-    <p>学无先后,达者为先</p>
-    <audio src="./src/张国荣 - 共同渡过 [mqms2].flac" autoplay loop='true'></audio>
+  <section class="sign">
+      <p class="chinese">学无先后,达者为先</p>
+      <p class="english">Learning has no limit, you can do it whenever.</p>
+  </section>
+  <audio src="./src/张国荣 - 共同渡过 [mqms2].flac" autoplay='true' loop='true'></audio>
 </body>
+
 </html>
